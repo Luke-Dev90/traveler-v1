@@ -3,8 +3,8 @@ package com.lchalela.pasajes.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "pais")
-public class Pais {
+@Table(name = "country")
+public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
