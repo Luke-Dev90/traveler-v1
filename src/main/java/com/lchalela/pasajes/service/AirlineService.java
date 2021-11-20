@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface AirlineService {
     List<Airline> findAllAirline();
-    Airline findAirlineById(Long id);
+    Airline findAirlineById(String id) throws Exception;
     void saveAirline(Airline airline);
     void updateAirline(Long id,Airline airline);
-    void deleteAirlineById(Long id);
+    void deleteAirlineById(String id) throws Exception;
 }
