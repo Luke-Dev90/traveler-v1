@@ -13,7 +13,7 @@ public class Hotel {
     private String Street;
     private Integer capacity;
     @OneToOne
-    @JoinColumn(name = "pais_id")
-    private Pais pais;
+    @JoinColumn(name = "country_id")
+    private Country country;
     private Double amount;
 }
