@@ -1,5 +1,7 @@
 package com.lchalela.pasajes.service.impl;
 
+import com.lchalela.pasajes.dto.AirlineDTO;
+import com.lchalela.pasajes.mapper.AirlineMapper;
 import com.lchalela.pasajes.model.Airline;
 import com.lchalela.pasajes.repository.AirlineRepository;
 import com.lchalela.pasajes.service.AirlineService;
@@ -15,6 +17,8 @@ public class AirlineServiceImpl implements AirlineService {
     @Autowired
     private AirlineRepository airlineRepository;
 
+    @Autowired
+    private AirlineMapper airlineMapper;
     @Override
     public List<Airline> findAllAirline() {
         List<Airline> airlineList = airlineRepository.findAll();
@@ -39,13 +43,14 @@ public class AirlineServiceImpl implements AirlineService {
     }
 
     @Override
-    public void saveAirline(Airline airline) {
+    public void saveAirline(AirlineDTO airlineDTO) {
+        Airline airline = airlineMapper.toEntity(airlineDTO);
         airlineRepository.save(airline);
     }
 
     @Override
     public void updateAirline(Long id, Airline airline) {
-        // TODO: 20/11/2021 need implements mapstruct 
+        // TODO: 20/11/2021 need implements mapstruct
     }
 
     @Override
