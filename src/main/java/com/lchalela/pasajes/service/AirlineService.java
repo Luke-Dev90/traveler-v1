@@ -1,13 +1,14 @@
 package com.lchalela.pasajes.service;
 
+import com.lchalela.pasajes.dto.AirlineDTO;
 import com.lchalela.pasajes.model.Airline;
 
 import java.util.List;
 
 public interface AirlineService {
-    List<Airline> findAllAirline();
-    Airline findAirlineById(Long id);
-    void saveAirline(Airline airline);
-    void updateAirline(Long id,Airline airline);
-    void deleteAirlineById(Long id);
+    List<AirlineDTO> findAllAirline();
+    AirlineDTO findAirlineById(String id) throws Exception;
+    void saveAirline(AirlineDTO airlineDTO);
+    void updateAirline(String id,AirlineDTO airline) throws Exception;
+    void deleteAirlineById(String id) throws Exception;
 }
