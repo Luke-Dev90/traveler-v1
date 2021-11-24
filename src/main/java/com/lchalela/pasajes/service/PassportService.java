@@ -1,13 +1,14 @@
 package com.lchalela.pasajes.service;
 
+import com.lchalela.pasajes.dto.PassportDTO;
 import com.lchalela.pasajes.model.Passport;
 
 import java.util.List;
 
 public interface PassportService {
-    List<Passport> findAllPassport();
-    Passport findPassportById(Long id);
-    void savePassport(Passport passport);
-    void updatePassport(Long id,Passport passport);
-    void deletePassportById(Long id);
+    List<PassportDTO> findAllPassport();
+    PassportDTO findPassportById(String id) throws Exception;
+    void savePassport(PassportDTO passportDTO);
+    void updatePassport(String id,PassportDTO passportDTO) throws Exception;
+    void deletePassportById(String id) throws Exception;
 }

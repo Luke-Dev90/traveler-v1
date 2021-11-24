@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AirlineServiceImpl implements AirlineService {
@@ -19,9 +18,10 @@ public class AirlineServiceImpl implements AirlineService {
 
     @Autowired
     private AirlineMapper airlineMapper;
+
     @Override
-    public List<Airline> findAllAirline() {
-        List<Airline> airlineList = airlineRepository.findAll();
+    public List<AirlineDTO> findAllAirline() {
+        List<AirlineDTO> airlineList = airlineMapper.toListDTO(airlineRepository.findAll());
         if(airlineList.isEmpty()){
             new Exception("List airline is empty");
         }
@@ -29,16 +29,16 @@ public class AirlineServiceImpl implements AirlineService {
     }
 
     @Override
-    public Airline findAirlineById(String id) throws Exception {
+    public AirlineDTO findAirlineById(String id) throws Exception {
         Long idParse = 0l;
         try {
             idParse = Long.parseLong(id);
         }catch (NumberFormatException e){
             throw new NumberFormatException("Number id invalid");
         }
-        Airline airline = airlineRepository.findById(idParse).orElseThrow(
+        AirlineDTO airline = airlineMapper.toDTO(airlineRepository.findById(idParse).orElseThrow(
                 () -> {return new Exception("Airline not found");}
-        );
+        ));
         return airline;
     }
 
@@ -49,13 +49,15 @@ public class AirlineServiceImpl implements AirlineService {
     }
 
     @Override
-    public void updateAirline(Long id, Airline airline) {
-        // TODO: 20/11/2021 need implements mapstruct
+    public void updateAirline(String id, AirlineDTO airlineDTO) throws Exception {
+        Airline airline = airlineMapper.toEntity(findAirlineById(id));
+        airlineMapper.updateEntity(airlineDTO,airline);
+        airlineRepository.save(airline);
     }
 
     @Override
     public void deleteAirlineById(String id) throws Exception {
-        Airline airline = findAirlineById(id);
+        Airline airline = airlineMapper.toEntity(findAirlineById(id));
         airlineRepository.delete(airline);
     }
 }
