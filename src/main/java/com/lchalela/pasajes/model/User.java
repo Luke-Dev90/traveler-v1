@@ -17,5 +17,7 @@ public class User {
     private Long id;
     private String email;
     private String password;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
     private Role role;
 }

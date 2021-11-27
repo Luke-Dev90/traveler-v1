@@ -71,8 +71,8 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void saveReservation(ReservationDTO reservationDTO) throws Exception {
         Reservation reservation = reservationMapper.toEntity(reservationDTO);
-        Hotel hotel = hotelMapper.toEntity(hotelService
-                .findHotelById(String.valueOf(reservationDTO.getHotelId())));
+        Hotel hotel = hotelService
+                .findHotelById(String.valueOf(reservationDTO.getHotelId()));
         Passport passport = passportMapper.toEntity(passportService
                 .findPassportById(String.valueOf(reservationDTO.getPassportId())));
         reservation.setHotel(hotel);
@@ -83,10 +83,18 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void updateReservation(String id, ReservationDTO reservationDTO) throws Exception {
-        Reservation reservation = reservationMapper.toEntity(findReservationById(id));
+        Long idParse = 0l;
+        try{
+            idParse = Long.parseLong(id);
+        }catch (NumberFormatException ef){
+            new NumberFormatException("The id is Invalid format");
+        }
+        Reservation reservation = reservationRepository.findById(idParse).orElseThrow(
+                ()->{ return new Exception("Reservation not found");}
+        );
         reservationMapper.updateReservation(reservationDTO,reservation);
-        Hotel hotel = hotelMapper.toEntity(hotelService
-                .findHotelById(String.valueOf(reservationDTO.getHotelId())));
+        Hotel hotel = hotelService
+                .findHotelById(String.valueOf(reservationDTO.getHotelId()));
         Passport passport = passportMapper.toEntity(passportService
                 .findPassportById(String.valueOf(reservationDTO.getPassportId())));
         reservation.setHotel(hotel);
@@ -97,7 +105,15 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void deleteReservationById(String id) throws Exception {
-        Reservation reservation = reservationMapper.toEntity(findReservationById(id));
+        Long idParse = 0l;
+        try {
+            idParse = Long.parseLong(id);
+        }catch (NumberFormatException ef){
+            new NumberFormatException("Invalid format exception");
+        }
+        Reservation reservation = reservationRepository.findById(idParse).orElseThrow(()->{
+            return new Exception("Reservation not found");
+        });
         reservationRepository.delete(reservation);
     }
 }

@@ -50,14 +50,30 @@ public class AirlineServiceImpl implements AirlineService {
 
     @Override
     public void updateAirline(String id, AirlineDTO airlineDTO) throws Exception {
-        Airline airline = airlineMapper.toEntity(findAirlineById(id));
+        Long idParse = 0l;
+        try{
+            idParse = Long.parseLong(id);
+        }catch (NumberFormatException ef){
+            new NumberFormatException("The format invalid");
+        }
+        Airline airline = airlineRepository.findById(idParse).orElseThrow(
+                () -> {return new Exception("Airline not found");}
+        );
         airlineMapper.updateEntity(airlineDTO,airline);
         airlineRepository.save(airline);
     }
 
     @Override
     public void deleteAirlineById(String id) throws Exception {
-        Airline airline = airlineMapper.toEntity(findAirlineById(id));
+        Long idParse = 0l;
+        try {
+            idParse = Long.parseLong(id);
+        }catch (NumberFormatException ef){
+            new NumberFormatException("Invalid format exception");
+        }
+        Airline airline = airlineRepository.findById(idParse).orElseThrow(
+                ()->{return new Exception("Airline not found");}
+        );
         airlineRepository.delete(airline);
     }
 }

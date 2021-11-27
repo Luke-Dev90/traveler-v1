@@ -48,14 +48,30 @@ public class PassportServiceImpl implements PassportService {
 
     @Override
     public void updatePassport(String id, PassportDTO passportDTO) throws Exception {
-        Passport passport = passportMapper.toEntity(findPassportById(id));
+        Long idParse = 0l;
+        try{
+            idParse = Long.parseLong(id);
+        }catch (NumberFormatException ef){
+            new NumberFormatException("The id is invalid format");
+        }
+        Passport passport = passportRepository.findById(idParse).orElseThrow(
+                () -> {return new Exception("Passport not found");}
+        );
         passportMapper.updatePassport(passportDTO,passport);
         passportRepository.save(passport);
     }
 
     @Override
     public void deletePassportById(String id) throws Exception {
-        Passport passport = passportMapper.toEntity(findPassportById(id));
+        Long idParse = 0l;
+        try {
+            idParse = Long.parseLong(id);
+        }catch (NumberFormatException ef){
+            new NumberFormatException("Invalid format exception");
+        }
+        Passport passport = passportRepository.findById(idParse).orElseThrow(()->{
+            return new Exception("Passport not found");
+        });
         passportRepository.delete(passport);
     }
 }
